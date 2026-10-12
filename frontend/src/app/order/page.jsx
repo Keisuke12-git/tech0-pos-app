@@ -1,11 +1,12 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react"; // ← ① Suspense を追加
 import { useSearchParams } from "next/navigation";
 
 import fetchProduct from "./fetchProduct";
 import fetchTransaction from "./fetchTransaction";
 
-export default function OrderPage() {
+//export default function OrderPage() {
+function OrderContent() {                               // ← ② export default を外して名前を変更
     const inputRef = useRef();
     const [orderProducts, setOrderProducts] = useState([]);
     const counterRef = useRef(0);
@@ -78,4 +79,13 @@ export default function OrderPage() {
 
         </>
     )
+}
+
+// ← ③ 新しく追加：Suspense で囲んだ入れ物
+export default function OrderPage() {
+    return (
+        <Suspense fallback={<p>読み込み中...</p>}>
+            <OrderContent />
+        </Suspense>
+    );
 }

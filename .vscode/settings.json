@@ -1,0 +1,7 @@
+{
+  "appService.zipIgnorePattern": [
+    "backend_env{,/**}",
+    ".env",
+    "__pycache__{,/**}"
+  ]
+}

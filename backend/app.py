@@ -22,7 +22,12 @@ session = {}
 # CORSミドルウェアの設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://app-tech0-gen12-23-fe.azurewebsites.net",
+    ],
+
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,7 +47,13 @@ def get_staff_name(staff_input: StaffInput, response: Response):
     if result is None:
         raise HTTPException(status_code=401, detail="担当者IDまたはパスワードが正しくありません")
     session_id = secrets.token_hex(16)
-    response.set_cookie(key="session_id", value=session_id) #ブラウザにCookieとして渡す
+    response.set_cookie(
+        key="session_id",
+        value=session_id,
+        samesite="none",
+        secure=True,
+    ) #ブラウザにCookieとして渡す
+
     session[session_id] = staff_input.input_staff_id #セッション対応表に書き込み
     return {"staff_name" : result}
 
